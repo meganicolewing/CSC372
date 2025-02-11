@@ -19,9 +19,9 @@ class Cube:
         '''resets the cube to a solved state, then prints this out'''
 
     def is_solved(self):
-        '''returns true if the cube is solved, false if not'''
+        '''returns true if the cube is solved (each side has one color), false if not'''
 
-    def rotate(self, side, clockwise)
+    def rotate(self, side, clockwise):
         '''rotates the cube one turn, then prints the current state. 
         the side to be rotated is denoted by input side:
         1-front, 2-top, 3-left, 4-right, 5-back, 6-bottom
@@ -67,4 +67,24 @@ class Cube:
     
 
     
-    
+    class Side:
+        '''contains the values for a single side of a 2x2 Rubik's cube.
+        you can print this side, check if this side is solved, 
+        and rotate this side'''
+        def __init__(self, top_left, top_right, bottom_left, bottom_right):
+            self.top_left = top_left
+            self.top_right = top_right
+            self.bottom_left = bottom_left
+            self.bottom_right = bottom_right
+
+        def __str__(self):
+            '''each color from this side, formatted like this:
+            1 2
+            3 4'''
+            
+        def rotate(self, clockwise):
+            '''rotates the values of this side one turn, 
+            either clockwise or counterclockwise, based on input clockwise'''
+
+        def is_solved(self):
+            '''returns true if all colors on this side are the same'''
