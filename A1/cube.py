@@ -18,6 +18,17 @@ class Cube:
     def __str__(self):
         '''all values from each side of rubik: 
         the top first, then a layer with the left, front, right, and back, then a layer with the bottom'''
+        print_string=""
+        for i in range(2):
+            print_string+="\t"+self.rubik[0][i][0]+" "+self.rubik[0][i][1]+"\n"
+        for i in range(1,5):
+            print_string+=self.rubik[i][0][0] + " " + self.rubik[i][0][1] + " "
+        print_string+="\n"
+        for i in range(1,5):
+            print_string+=self.rubik[i][1][0]+" "+self.rubik[i][1][1]+" "
+        for i in range(2):
+            print_string+="\t"+self.rubik[5][i][0]+" "+self.rubik[5][i][1]+"\n"
+        return print_string
 
     def clone(self):
         '''returns a Cube that is a deep copy of rubik'''
@@ -52,46 +63,80 @@ class Cube:
     def randomize(self, num:int) -> None:
         '''completes num turns on random sides of rubik'''
         for i in range(num):
-            side = random.randint(0,6)
+            side = random.randint(0,5)
             self.rotate(side)
 
-    def rotate(self, side:int) -> None:
+    def rotate(self, side:int, clockwise:bool=True) -> None:
         '''rotates rubik one turn, then prints the current state. 
         the side to be rotated is denoted by input side:
         0-top, 1-left, 2-front, 3-right, 4-back, 5-bottom
+        rotates the side clockwise or counterclockwise based on input clockwise
         '''
         self.rotate_side(side)
-        if side==0:
+        if side==0 or side == 5:
             self.rotate_top()
-        elif side == 1:
+        elif side == 1 or side == 3:
             self.rotate_left()
-        elif side == 2:
+        elif side == 2 or side == 4:
             self.rotate_front()
-        elif side == 3:
-            self.rotate_left()
-        elif side == 4:
-            self.rotate_back()
-        else:
-            self.rotate_bottom()
+        
+        #to turn counterclockwise, make the clockwise turn three total times
+        if not clockwise:
+            self.rotate(side, True)
+            self.rotate(side,True)
 
     def rotate_front(self) -> None:
         '''rotates the front side of rubik one turn clockwise. used as a helper function.'''
-    
-    def rotate_back(self) -> None:
-        '''rotates the back side of rubik one turn clockwise. used as a helper function.'''
+        top_left = self.rubik[0][1][0]
+        top_right = self.rubik[0][1][1]
+        #set the top
+        self.rubik[0][1][0] = self.rubik[1][1][1]
+        self.rubik[0][1][1] = self.rubik[1][0][1]
+        #set the left
+        self.rubik[1][1][1] = self.rubik[5][0][1]
+        self.rubik[1][0][1] = self.rubik[5][0][0]
+        #set the bottom
+        self.rubik[5][0][1]=self.rubik[3][0][0]
+        self.rubik[5][0][0]=self.rubik[3][1][0]
+        #set the right
+        self.rubik[3][0][0]=top_left
+        self.rubik[3][1][0]=top_right
     
     def rotate_top(self) -> None:
         '''rotates the top side of rubik one turn clockwise. used as a helper function.'''
+        back_left = self.rubik[4][0][1]
+        back_right = self.rubik[4][0][0]
+        #set the back
+        self.rubik[4][0][1] = self.rubik[1][0][1]
+        self.rubik[4][0][0] = self.rubik[1][0][0]
+        #set the left
+        self.rubik[1][0][1] = self.rubik[5][0][1]
+        self.rubik[1][0][0] = self.rubik[5][0][0]
+        #set the front
+        self.rubik[5][0][1]=self.rubik[3][0][1]
+        self.rubik[5][0][0]=self.rubik[3][0][0]
+        #set the right
+        self.rubik[3][0][1]=back_left
+        self.rubik[3][0][0]=back_right
 
-    def rotate_bottom(self) -> None:
-        '''rotates the bottom side of rubik one turn clockwise. used as a helper function.'''
-    
     def rotate_left(self) -> None:
         '''rotates the left side of rubik one turn clockwise. used as a helper function.'''
+        '''rotates the top side of rubik one turn clockwise. used as a helper function.'''
+        top_left = self.rubik[0][0][0]
+        top_right = self.rubik[0][1][0]
+        #set the top
+        self.rubik[0][0][0] = self.rubik[4][1][1]
+        self.rubik[0][1][0] = self.rubik[4][0][1]
+        #set the back
+        self.rubik[4][0][1] = self.rubik[5][1][0]
+        self.rubik[4][1][1] = self.rubik[5][0][0]
+        #set the bottom
+        self.rubik[5][1][0]=self.rubik[2][1][0]
+        self.rubik[5][0][0]=self.rubik[2][0][0]
+        #set the front
+        self.rubik[2][1][0]=top_right
+        self.rubik[2][0][0]=top_left
     
-    def rotate_right(self) -> None:
-        '''rotates the right side of rubik one turn clockwise. used as a helper function.'''
-
     def rotate_side(self, side) -> None:
         '''rotates the given side of rubik once clockwise. used as a helper function.'''
         temp = self.rubik[side][0][0]
