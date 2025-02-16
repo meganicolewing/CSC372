@@ -11,23 +11,26 @@ class Cube:
         for side in range(6):
             self.rubik.append([])
             for i in range(2):
-                self.rubik.append([])
+                self.rubik[side].append([])
                 for j in range(2):
-                    self.rubik[side][i][j] = side
+                    self.rubik[side][i].append([])
+                    self.rubik[side][i][j] = (side)
         
     def __str__(self):
         '''all values from each side of rubik: 
         the top first, then a layer with the left, front, right, and back, then a layer with the bottom'''
+        spacing = "    "
         print_string=""
         for i in range(2):
-            print_string+="\t"+self.rubik[0][i][0]+" "+self.rubik[0][i][1]+"\n"
+            print_string+=spacing+str(self.rubik[0][i][0])+" "+str(self.rubik[0][i][1])+"\n"
         for i in range(1,5):
-            print_string+=self.rubik[i][0][0] + " " + self.rubik[i][0][1] + " "
+            print_string+=str(self.rubik[i][0][0]) + " " + str(self.rubik[i][0][1]) + " "
         print_string+="\n"
         for i in range(1,5):
-            print_string+=self.rubik[i][1][0]+" "+self.rubik[i][1][1]+" "
+            print_string+=str(self.rubik[i][1][0])+" "+str(self.rubik[i][1][1])+" "
+        print_string+="\n"
         for i in range(2):
-            print_string+="\t"+self.rubik[5][i][0]+" "+self.rubik[5][i][1]+"\n"
+            print_string+=spacing+str(self.rubik[5][i][0])+" "+str(self.rubik[5][i][1])+"\n"
         return print_string
 
     def clone(self):
@@ -36,7 +39,7 @@ class Cube:
         for side in range(6):
             for i in range(2):
                 for j in range(2):
-                    new_cube[side][i][j] = self.rubik[side][i][j]
+                    new_cube.rubik[side][i][j] = self.rubik[side][i][j]
         return new_cube
 
     def reset(self) -> None:
@@ -110,11 +113,11 @@ class Cube:
         self.rubik[4][0][1] = self.rubik[1][0][1]
         self.rubik[4][0][0] = self.rubik[1][0][0]
         #set the left
-        self.rubik[1][0][1] = self.rubik[5][0][1]
-        self.rubik[1][0][0] = self.rubik[5][0][0]
+        self.rubik[1][0][1] = self.rubik[2][0][1]
+        self.rubik[1][0][0] = self.rubik[2][0][0]
         #set the front
-        self.rubik[5][0][1]=self.rubik[3][0][1]
-        self.rubik[5][0][0]=self.rubik[3][0][0]
+        self.rubik[2][0][1]=self.rubik[3][0][1]
+        self.rubik[2][0][0]=self.rubik[3][0][0]
         #set the right
         self.rubik[3][0][1]=back_left
         self.rubik[3][0][0]=back_right
