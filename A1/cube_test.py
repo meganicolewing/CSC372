@@ -22,6 +22,7 @@ def main():
     assert(copy!=cube)
     cube.reset()
     assert(cube.is_solved())
+    cube.interaction()
 
 if __name__ == "__main__":
     main()

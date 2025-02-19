@@ -33,6 +33,46 @@ class Cube:
             print_string+=spacing+str(self.rubik[5][i][0])+" "+str(self.rubik[5][i][1])+"\n"
         return print_string
 
+    def interaction(self):
+        '''gives user interaction for the cube. runs a loop of options until the user decides to exit.
+        can call rotate, randomize, reset, is_solved, and print the cube'''
+        user_input = 0
+        while user_input!=6:
+            print("1: Rotate a side")
+            print("2: Randomize the cube")
+            print("3: Check if the cube is solved")
+            print("4: Reset the cube")
+            print("5: Print the cube")
+            print("6: Exit")
+            user_input = int(input("What would you like to do?"))
+            if(user_input==1):
+                print("0: top")
+                print("1: left")
+                print("2: front")
+                print("3: right")
+                print("4: back")
+                print("5: bottom")
+                side = int(input("Which side would you like to rotate?"))
+                print("0: clockwise")
+                print("1: counterclockwise")
+                clockwise = (int(input("Do you want to turn the side clockwise or counterclockwise?")))==0
+                self.rotate(side, clockwise)
+                print(self)
+            elif(user_input == 2):
+                num = int(input("How many turns would you like to randomize?"))
+                self.randomize(num)
+                print(self)
+            elif(user_input==3):
+                if(self.is_solved()):
+                    print("The cube is solved!")
+                else:
+                    print("The cube is not solved")
+            elif(user_input==4):
+                self.reset()
+                print(self)
+            elif(user_input==5):
+                print(self)
+
     def clone(self):
         '''returns a Cube that is a deep copy of rubik'''
         new_cube = Cube()
