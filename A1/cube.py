@@ -65,11 +65,9 @@ class Cube:
                 print("1: counterclockwise")
                 clockwise = (int(input("Do you want to turn the side clockwise or counterclockwise?")))==0
                 self.rotate(side, clockwise)
-                print(self)
             elif(user_input == 2):
                 num = int(input("How many turns would you like to randomize?"))
                 self.randomize(num)
-                print(self)
             elif(user_input==3):
                 if(self.is_solved()):
                     print("The cube is solved!")
@@ -77,7 +75,6 @@ class Cube:
                     print("The cube is not solved")
             elif(user_input==4):
                 self.reset()
-                print(self)
             elif(user_input==5):
                 print(self)
 

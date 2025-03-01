@@ -25,13 +25,16 @@ def main():
     cube.reset()
     assert(cube.is_solved())
     cube.interaction()'''
-    cube.randomize(4)
     searcher = Search()
-    solution = searcher.deepening_A_star(cube)
-    print(solution)
-
-
-
-
+    '''
+    for i in range(15):
+        for k in range(20):
+            cube.reset()
+            cube.randomize(i)
+            print(cube)
+            heuristic = searcher.heuristic(cube.rubik)
+            assert heuristic<=i
+    '''
+    
 if __name__ == "__main__":
     main()
