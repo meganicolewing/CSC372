@@ -25,15 +25,11 @@ def main():
     cube.reset()
     assert(cube.is_solved())
     cube.interaction()'''
-    cube.randomize(2)
+    cube.randomize(4)
     searcher = Search()
-    solution = searcher.breadth_first(cube)
-    print(solution[0].path_cost)
-    print(solution[1])
+    solution = searcher.deepening_A_star(cube)
+    print(solution)
 
-    solution = searcher.iterative_deepening(cube)
-    print(solution[0].path_cost)
-    print(solution[1])
 
 
 
