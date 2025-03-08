@@ -111,7 +111,7 @@ class Search:
                     return solution,nodes_expanded,nodes_on_queue-1
         return None,nodes_expanded,nodes_on_queue-1
 
-    #relic, definct after switch from recursion to PQ
+    #relic, defunct after switch from recursion to PQ
     def __A_star(self,node:Node,max_depth:int,nodes_expanded:int=0):
         '''uses recursion to perform A* to the limited depth as given in max_depth.
         h(n) for each node is as stated in the heuristic function below
