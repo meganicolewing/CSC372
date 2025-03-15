@@ -38,12 +38,18 @@ int dpll(int** clauses, int num_clauses, int* symbols, int num_symbols, int* sol
 //takes the SAT rules and symbols and the current assignment
 //if a variable only occurs in one value unsolved clauses, returns that value
 //otherwise, returns 0
-int findPureSymbol(int** clauses, int num_clauses, int* symbols, int num_symbols, int* solution, int len_solution);
+int findPureSymbol(int** clauses, int num_clauses, int* solution);
 
 //takes the SAT rules and symbols and the current assignment
 //if a variable occurs in a unit clause, returns that value
 //otherwise, returns 0
-int findUnitClause(int** clauses, int num_clauses, int* symbols, int num_symbols, int* solution, int len_solution);
+int findUnitClause(int** clauses, int num_clauses, int* solution);
+
+//takes the SAT rules and current dpll solution
+//returns -1 if a clause is false based on the solution
+//returns 1 if all clauses are true
+//returns 0 otherwise
+int dpllChecker(int** clauses, int num_clauses, int* solution);
 
 
 
@@ -111,17 +117,16 @@ int walkSAT(int** clauses, int num_clauses, int p, int max_walk, int* solution, 
 //returns the indices of all false clauses in false_clauses
 int falseRules(int** clauses, int num_clauses, int* assignment, int* false_clauses){
     int num_false = 0;
-    int j = 0;
     false_clauses = malloc(num_clauses*sizeof(int));
     if(false_clauses==NULL){
         printf("error allocating false clauses ");
         exit(1);
     }
     for(int i = 0; i<num_clauses; i++){
+        int j = 0;
         int clause_sat = 0;
         int current_literal = clauses[i][0];
         while(!clause_sat && current_literal!=0){
-            current_literal = clauses[i][j];
             int current_var = abs(current_literal);
             if(assignment[current_var-1]==current_literal){
                 clause_sat = 1;
@@ -132,6 +137,7 @@ int falseRules(int** clauses, int num_clauses, int* assignment, int* false_claus
             num_false++;
         }
         j++;
+        current_literal = clauses[i][j];
     }
     return num_false;
 }
@@ -178,16 +184,55 @@ int dpllSAT(int** clauses, int num_clauses, int* symbols, int num_symbols, int* 
 //recursive
 //bases cases: every rule is satisfied, one rule is false
 //recursions: pure symbol, unit clause, or assign the next symbol
-int dpll(int** clauses, int num_clauses, int* symbols, int num_symbols, int* solution, int len_solution);
+int dpll(int** clauses, int num_clauses, int* symbols, int num_symbols, int* solution, int len_solution){
+    
+}
 
 //takes the SAT rules and symbols and the current assignment
-//if a variable only occurs in one value in unsolved clauses, returns that value
+//if a variable only occurs in one value in unsolved clause, returns that value
 //otherwise, returns 0
-int findPureSymbol(int** clauses, int num_clauses, int* symbols, int num_symbols, int* solution, int len_solution);
+int findPureSymbol(int** clauses, int num_clauses, int* solution);
 
 //takes the SAT rules and symbols and the current assignment
 //if a variable occurs in a unit clause, returns that value
 //otherwise, returns 0
-int findUnitClause(int** clauses, int num_clauses, int* symbols, int num_symbols, int* solution, int len_solution);
+int findUnitClause(int** clauses, int num_clauses,int* solution){
+    for(int i = 0; i<num_clauses; i++){
+        if(clauses[i][1]==0){
+            int literal = clauses[i][0];
+            if(solution[abs(literal)-1]==0){
+                return literal;
+            }
+        }
+    }
+    return 0;
+}
+
+int dpllChecker(int** clauses, int num_clauses, int* solution){
+    for(int i = 0; i<num_clauses; i++){
+        int clause_sat = 0;
+        int clause_false = 1;
+        int j = 0;
+        int current_literal = clauses[i][0];
+        while(current_literal!=0){
+            int current_var = abs(current_literal);
+            if(solution[current_var-1]==current_literal){
+                clause_sat = 1;
+            }
+            else if(solution[current_var-1]==0){
+                clause_false = 0;
+            }
+        }
+        if(!clause_false&&!clause_sat){
+            return 0;
+        }
+        else if(!clause_sat){
+            return -1;
+        }
+        j++;
+        current_literal = clauses[i][j];
+    }
+    return 1;
+}
 
 
