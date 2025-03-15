@@ -35,7 +35,7 @@ class Search:
                 side = (i//2)
                 if not(direction!=expanding.rotation_direction and side==expanding.rotation_side):
                     next_state = expanding.state.clone()
-                    next_state.rotate(side,direction)
+                    next_state.rotate(side,(direction==0))
                     new_cost = expanding.path_cost + 1
                     next_node = Node(next_state,expanding,direction,side,new_cost)
                     frontier.put((next_node.path_cost,next_node))
@@ -82,7 +82,7 @@ class Search:
                     side = (i//2)%3
                     if not(direction!=expanding.rotation_direction and side==expanding.rotation_side):
                         next_state = expanding.state.clone()
-                        next_state.rotate(side,direction)
+                        next_state.rotate(side,(direction==0))
                         heuristic = self.heuristic(next_state.rubik)
                         next_node = Node(next_state,expanding,direction,side,expanding.path_cost+1,heuristic)
                         frontier.put((next_node.total_cost,next_node))
@@ -103,7 +103,7 @@ class Search:
             side = (i//2)
             if not(direction!=node.rotation_direction and side==node.rotation_side):
                 next_state = node.state.clone()
-                next_state.rotate(side,direction)
+                next_state.rotate(side,(direction==0))
                 next_node = Node(next_state,node,direction,side,node.path_cost+1)
                 nodes_on_queue+=1
                 solution,nodes_expanded,nodes_on_queue = self.__depth_first(next_node,max_depth,nodes_expanded,nodes_on_queue)
