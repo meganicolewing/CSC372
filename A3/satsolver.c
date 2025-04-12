@@ -132,12 +132,11 @@ int main(){
         //printSolution(clauses[0],4);
         //printf("DPLL:\n");
         clock_t before = clock();
-        dpllSAT(clauses,num_rules,num_vars);
+        //dpllSAT(clauses,num_rules,num_vars);
         clock_t after = clock();
-        FILE* dplldata = fopen("dplldata.csv","a");
-        fprintf(dplldata,"%s,%f\n",file_name,((double) (after - before)) / CLOCKS_PER_SEC);
-        fclose(dplldata);
-        /*
+        //FILE* dplldata = fopen("dplldata.csv","a");
+        //fprintf(dplldata,"%s,%f\n",file_name,((double) (after - before)) / CLOCKS_PER_SEC);
+        //fclose(dplldata);
         int maxwalk = num_vars*num_vars;
         printf("local:\n");
         before = clock();
@@ -150,7 +149,7 @@ int main(){
         float avg_time = 0;
         float avg_c = 0;
         for(int j = 0;j<10;j++){
-            printf("j=%d\n",j);
+            //printf("j=%d\n",j);
             before = clock();
             c = walkSAT(clauses,num_rules,60,maxwalk,num_vars);
             after = clock();
@@ -162,7 +161,6 @@ int main(){
         FILE* walkdata = fopen("walksatdata.csv","a");
         fprintf(walkdata,"%s,%f,%f\n",file_name,avg_time,avg_c);
         fclose(walkdata);
-        */
         for(int i =0;i<num_rules;i++){
             free(clauses[i]);
         }
@@ -227,7 +225,7 @@ int walkSAT(int** clauses, int num_clauses, int p, int max_walk, int num_symbols
         if(num_false==0){
             printSolution(solution,num_symbols);
             free(solution);
-            return num_symbols;
+            return num_clauses;
         }
         int chosen_clause = false_clause_arr[rand()%num_false];
         free(false_clause_arr);
@@ -259,7 +257,7 @@ int walkSAT(int** clauses, int num_clauses, int p, int max_walk, int num_symbols
     }
     //printSolution(solution,num_symbols);
     free(solution);
-    return num_symbols-num_false;
+    return num_clauses-num_false;
 }
 
 //takes all SAT clauses and the current assignment
@@ -560,7 +558,7 @@ int localSAT(int** clauses, int num_clauses, int max_walk, int num_symbols){
         if(num_false==0){
             printSolution(solution,num_symbols);
             free(solution);
-            return num_symbols;
+            return num_clauses;
         }
         int best_sat = 0;
         int best_clause = 0;
@@ -581,5 +579,5 @@ int localSAT(int** clauses, int num_clauses, int max_walk, int num_symbols){
     }
     //printSolution(solution,num_symbols);
     free(solution);
-    return num_symbols-num_false;
+    return num_clauses-num_false;
 }
