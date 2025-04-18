@@ -17,22 +17,34 @@ class FullDistribution:
             self.distribution.append(binary_rep)
 
     def infer(self,ands=[int],given=[int]):
-        ands_sum = self.sumProbs(ands)
-        given_sum = self.sumProbs(given)
+        ands_sum,given_sum = self.sumProbs(ands,given)
         return ands_sum/given_sum
 
-    def sumProbs(self,vars=[int]):
-        prob = 0
+#change this to sum over both - make it go faster
+    def sumProbs(self,ands=[int], givens=[int]):
+        prob_and = 0
+        prob_given = 0
         for i in range(len(self.distribution)):
             matches = True
             j = 0
-            while j<len(vars) and matches:
-                if vars[j]>0:
-                    if self.distribution[i][abs(vars[j])] == 0:
+            while j<len(ands) and matches:
+                if ands[j]>0:
+                    if self.distribution[i][abs(ands[j])] == 0:
                         matches = False
-                elif self.distribution[i][abs(vars[j])] == 1:
+                elif self.distribution[i][abs(ands[j])] == 1:
                     matches = False
                 j = j+1
             if matches:
-                prob = prob + self.distribution[i][0]
-        return prob
+                prob_and = prob_and + self.distribution[i][0]
+            matches = True
+            j = 0
+            while j<len(givens) and matches:
+                if givens[j]>0:
+                    if self.distribution[i][abs(givens[j])] == 0:
+                        matches = False
+                elif self.distribution[i][abs(givens[j])] == 1:
+                    matches = False
+                j = j+1
+            if matches:
+                prob_given = prob_given + self.distribution[i][0]
+        return prob_and, prob_given

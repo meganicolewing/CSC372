@@ -1,3 +1,4 @@
+from random import random
 class Net:
     def __init__(self):
         self.B = 0.02
@@ -53,3 +54,41 @@ class Net:
         prob = prob*temp_prob
         return prob
         
+    def pBreakin(self)->bool:
+        rand = random()
+        return rand<self.B
+    
+    def pEarthquake(self)->bool:
+        rand=random()
+        return rand<self.E
+    
+    def pAlarm(self,breakin=bool,earthquake=bool)->bool:
+        rand=random()
+        if breakin:
+            if earthquake:
+                return rand<self.ABtEt
+            return rand<self.ABtEf
+        elif earthquake:
+            return rand<self.ABfEt
+        return rand<self.ABfEf
+    
+    def pJohn(self,alarm=bool)->bool:
+        rand=random()
+        if alarm:
+            return rand<self.JAt
+        return rand<self.JAf
+    
+    def pMary(self,alarm=bool)->bool:
+        rand=random()
+        if alarm:
+            return rand<self.MAt
+        return rand<self.MAf
+
+    def priorSample(self)-> list[bool]:
+        sample = []
+        sample.append(self.pBreakin())
+        sample.append(self.pEarthquake())
+        sample.append(self.pAlarm(sample[0],sample[1]))
+        sample.append(self.pJohn(sample[2]))
+        sample.append(self.pMary(sample[2]))
+        return sample

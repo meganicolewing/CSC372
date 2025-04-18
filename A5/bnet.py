@@ -1,4 +1,5 @@
 from FullDistribution import FullDistribution
+from RejectionSampling import RejctionSampling
 import sys
 
 def getVar(argument=str):
@@ -34,8 +35,11 @@ def main():
         var = getVar(args[index_given])
         given.append(var)
         index_given=index_given+1
-    inference = FullDistribution()
-    print(inference.infer(ands,given))
+    full_joint = FullDistribution()
+    print("full dist",full_joint.infer(ands,given))
+    rej_sam = RejctionSampling()
+    print("sampling",rej_sam.infer(ands,given,500000,10))
+
 
 
 if __name__ == "__main__":
