@@ -5,8 +5,11 @@ class RejctionSampling:
         self.net = Net()
 
     #simulates the probability at least n times. 
-    #continues simulating until the desired probaility has been simulated at least 10 times
-    def infer(self,ands=[int],givens=[int], n=int,min=int):
+    #continues simulating until the desired probaility has been simulated at least min times
+    #ands contains all query values and the priors
+    #givens contains the priors
+    #returns the probability
+    def infer(self,ands=[int],givens=[int], n=int,min=int) -> float:
         num_and = 0
         num_given = 0
         i = 0

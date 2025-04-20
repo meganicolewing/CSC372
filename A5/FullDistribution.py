@@ -8,6 +8,8 @@ class FullDistribution:
         self.distribution = []
         self.expandDistribution()
 
+    #expands the full joint distribution using the given net and iterating over binary
+    #adds the probabilities and the corresponding binary into the distribution attribute
     def expandDistribution(self)->None:
         num_combs = (2**NUM_VARS)
         for i in range(num_combs):
@@ -16,12 +18,16 @@ class FullDistribution:
             binary_rep.insert(0,prob)
             self.distribution.append(binary_rep)
 
-    def infer(self,ands=[int],given=[int]):
+    #calculates and returns the probability
+    #ands = values of all query and priors
+    #given = values of all priors
+    def infer(self,ands=[int],given=[int]) -> float:
         ands_sum,given_sum = self.sumProbs(ands,given)
         return ands_sum/given_sum
 
-#change this to sum over both - make it go faster
-    def sumProbs(self,ands=[int], givens=[int]):
+    #sums the total probability of the ands and givens
+    #ands, givens = list of values
+    def sumProbs(self,ands=[int], givens=[int]) -> tuple[int,int]:
         prob_and = 0
         prob_given = 0
         for i in range(len(self.distribution)):

@@ -1,5 +1,6 @@
 from random import random
 class Net:
+    #creates the net with all given probabilities
     def __init__(self):
         self.B = 0.02
         self.E = 0.03
@@ -12,6 +13,9 @@ class Net:
         self.MAt = 0.69
         self.MAf = 0.02
 
+    #takes a full probability outcome, with each random variable set
+    #returns the probability of that outcome
+    #useful for constructing a joint distribution
     def And(self,burglary=bool,earthquake=bool,alarm=bool,john=bool,mary=bool) -> float:
         prob = 1
         if burglary:
@@ -54,14 +58,18 @@ class Net:
         prob = prob*temp_prob
         return prob
         
+    #simulates the breakin probability by generating a random number
     def pBreakin(self)->bool:
         rand = random()
         return rand<self.B
     
+    #simulates the earthquake probaility by generating a random number
     def pEarthquake(self)->bool:
         rand=random()
         return rand<self.E
     
+    #simulates the alarm probability by generating a random number
+    #chooses the correct probability using the given values of breakin and earthquake
     def pAlarm(self,breakin=bool,earthquake=bool)->bool:
         rand=random()
         if breakin:
@@ -72,18 +80,23 @@ class Net:
             return rand<self.ABfEt
         return rand<self.ABfEf
     
+    #simulates the john probability by generating a random number
+    #chooses the correct probabilty using the given value of alarm
     def pJohn(self,alarm=bool)->bool:
         rand=random()
         if alarm:
             return rand<self.JAt
         return rand<self.JAf
-    
+    #simulates the mary probability by generating a random number
+    #chooses the correct probabilty using the given value of alarm
     def pMary(self,alarm=bool)->bool:
         rand=random()
         if alarm:
             return rand<self.MAt
         return rand<self.MAf
 
+    #simulates and returns a full randomized probability outcome
+    #useful for sampling
     def priorSample(self)-> list[bool]:
         sample = []
         sample.append(self.pBreakin())

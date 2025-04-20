@@ -19,6 +19,9 @@ def getVar(argument=str):
     return variable    
 
 def main():
+    if(len(sys.argv)==1):
+        print("please give arguments for the query")
+        exit()
     args = sys.argv[1:]
     ands = []
     given = []
