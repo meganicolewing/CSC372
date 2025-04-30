@@ -2,24 +2,34 @@
 class MDP:
 
     def __init__(self):
-        states = []
-        rewards = []
+        self.states = []
+        self.rewards = []
         for i in range(16):
-            states.append(i)
-            rewards.append(50)
+            self.states.append(i)
+            self.rewards.append(50)
             if(i%2==0):
-                rewards[i] = 0
+                self.rewards[i] = 0
             elif(i==10):
-                rewards[i] = 100
+                self.rewards[i] = 100
             elif(i==12):
-                rewards[i] = 200
+                self.rewards[i] = 200
         #0 - up
         #1 - down
         #2 - left
         #3 - right
-        actions = [0,1,2,3]
+        self.actions = [0,1,2,3]
+        self.transition_matrix = []
+        for next in self.states:
+            self.transition_matrix.append([])
+            for current in self.states:
+                self.transition_matrix[next].append([])
+                for action in self.actions:
+                    self.transition_matrix[next][current].append(self.transitionFunction(next,current,action))
+        self.discount = 0.95
 
-    def transition(self,next_state=int, current_state=int, action=int)->float:
+    #returns P(next_state|current_state,action), with bounce taken into account
+    #used to calculate the transition matrix in the initializer, should not be used elsewhere for efficiency
+    def transitionFunction(self,next_state=int, current_state=int, action=int)->float:
         retval = 0
         if(next_state==current_state):
             return 0.1
