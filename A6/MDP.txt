@@ -1,3 +1,4 @@
+
 class MDP:
 
     def __init__(self):
@@ -43,26 +44,14 @@ class MDP:
             if(next_state == (current_state+4) or ((current_state+4)>15 and (current_state-4)==next_state)):
                 retval = retval + 0.2
         if(action == 2):
-            if((current_state)%4)==0:
-                if (current_state+1)==next_state:
-                    retval = retval + 0.7
-            elif(next_state == (current_state-1)): #or (((current_state)%4)==0 and (current_state+1)==next_state)):
+            if(next_state == (current_state-1) or (((current_state)%4)==0 and (current_state+1)==next_state)):
                 retval = retval + 0.7
-            if ((current_state+1)%4)==0:
-                if(current_state-1)==next_state:
-                    retval = retval + 0.2
-            elif(next_state == (current_state+1)): # or (((current_state+1)%4)==0 and (current_state-1)==next_state)):
+            if(next_state == (current_state+1) or (((current_state+1)%4)==0 and (current_state-1)==next_state)):
                 retval = retval + 0.2
         if(action == 3):
-            if ((current_state+1)%4)==0:
-                if (current_state-1)==next_state:
-                    retval = retval + 0.7
-            elif(next_state == (current_state+1)): # or (((current_state+1)%4)==0 and (current_state-1)==next_state)):
+            if(next_state == (current_state+1) or (((current_state+1)%4)==0 and (current_state-1)==next_state)):
                 retval = retval + 0.7
-            if ((current_state)%4)==0:
-                if (current_state+1)==next_state:
-                    retval = retval + 0.2
-            elif(next_state == (current_state-1)): # or (((current_state)%4)==0 and (current_state+1)==next_state)):
+            if(next_state == (current_state-1) or (((current_state)%4)==0 and (current_state+1)==next_state)):
                 retval = retval + 0.2
         return retval
 
@@ -92,7 +81,7 @@ class MDP:
                     delta = change
                     #print(j,current,change)
                 #delta = max(delta,abs(new_utility[current]-utility[current]))
-            #print("delta:",delta)
+            print("delta:",delta)
         return utility
 
     #determines the optimal policy using value iteration
@@ -117,7 +106,7 @@ class MDP:
         policy = []
         for s in self.states:
             utility.append(0)
-            policy.append(2)
+            policy.append(0)
         changed = True
         while changed:
             for i in range(max_iter):
